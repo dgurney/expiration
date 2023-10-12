@@ -13,7 +13,7 @@ func winver() {
 
 	szApp, _ := windows.UTF16PtrFromString("Binbows")
 	exp := GetExpirationTime()
-	szOtherStuff, _ := windows.UTF16PtrFromString(fmt.Sprintf("Evaluation copy. Expires %s", exp.Format("2006/01/02 03:04")))
+	szOtherStuff, _ := windows.UTF16PtrFromString(fmt.Sprintf("Evaluation copy. Expires %s", exp.Format("2006/01/02 15:04")))
 	if exp.IsZero() {
 		szOtherStuff, _ = windows.UTF16PtrFromString("")
 	}
