@@ -48,6 +48,6 @@ func main() {
 	case expirationTime.IsZero():
 		fmt.Printf("Build %s will not expire\n", buildLabEx)
 	default:
-		fmt.Printf("Build %s will expire on: %s\n", buildLabEx, expirationTime.Format("2006-01-02 15:04:05 MST (Monday)"))
+		fmt.Printf("Build %s will expire on: %s\n", buildLabEx, expirationTime.Format("2006/01/02 15:04:05 MST (Monday)"))
 	}
 }
