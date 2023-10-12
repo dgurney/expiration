@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"syscall"
 	"time"
@@ -26,6 +27,12 @@ func GetExpirationTime() time.Time {
 }
 
 func main() {
+	emulateWinver := flag.Bool("w", false, "Mimic a winver dialog")
+	flag.Parse()
+	if *emulateWinver {
+		winver()
+		return
+	}
 	cv, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
 	if err != nil {
 		fmt.Println(err)
