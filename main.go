@@ -38,16 +38,16 @@ func main() {
 		fmt.Println(err)
 	}
 
-	buildLabEx, _, err := cv.GetStringValue("BuildLab")
+	buildLab, _, err := cv.GetStringValue("BuildLab")
 	if err != nil {
-		buildLabEx = fmt.Sprintf("(unable to retrieve BuildLab value due to '%s')", err)
+		buildLab = fmt.Sprintf("(unable to retrieve BuildLab value due to '%s')", err)
 	}
 
 	expirationTime := GetExpirationTime()
 	switch {
 	case expirationTime.IsZero():
-		fmt.Printf("Build %s will not expire\n", buildLabEx)
+		fmt.Printf("Build %s will not expire\n", buildLab)
 	default:
-		fmt.Printf("Build %s will expire on: %s\n", buildLabEx, expirationTime.Format("2006/01/02 15:04:05 MST (Monday)"))
+		fmt.Printf("Build %s will expire on: %s\n", buildLab, expirationTime.Format("2006/01/02 15:04:05 MST (Monday)"))
 	}
 }
