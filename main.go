@@ -33,14 +33,25 @@ func main() {
 		winver()
 		return
 	}
-	cv, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
-	if err != nil {
-		fmt.Println(err)
-	}
+	buildLab := ""
 
-	buildLab, _, err := cv.GetStringValue("BuildLab")
-	if err != nil {
-		buildLab = fmt.Sprintf("(unable to retrieve BuildLab value due to '%s')", err)
+	// get the correct buildlab for CU builds - if this key does not exist just fall back
+	cv, err := registry.OpenKey(registry.LOCAL_MACHINE, `SYSTEM\Software\Microsoft\BuildLayers\OSClient`, registry.QUERY_VALUE)
+	if err == nil {
+		buildLab, _, err = cv.GetStringValue("BuildLab")
+		if err != nil {
+			buildLab = fmt.Sprintf("(unable to retrieve OSClient BuildLab value due to '%s')", err)
+		}
+	} else {
+		cv, err := registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
+		if err != nil {
+			fmt.Println(err)
+		}
+
+		buildLab, _, err = cv.GetStringValue("BuildLab")
+		if err != nil {
+			buildLab = fmt.Sprintf("(unable to retrieve CurrentVersion BuildLab value due to '%s')", err)
+		}
 	}
 
 	expirationTime := GetExpirationTime()
