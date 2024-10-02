@@ -12,7 +12,7 @@ import (
 
 const SystemExpirationDateAddress uintptr = 0x7ffe02c8
 
-/* GetExpirationTime retrieves the running system's timebomb expiration. It works by retrieving the SystemExpirationDate value as a FileTime from KUSER_SHARED_DATA with some pointer magic. */
+// GetExpirationTime retrieves the running system's timebomb expiration. It works by retrieving the SystemExpirationDate value as a FileTime from KUSER_SHARED_DATA with some pointer magic.
 func GetExpirationTime() time.Time {
 	// who needs safety and 0 vet warnings anyway
 	ptr := unsafe.Pointer(SystemExpirationDateAddress)
