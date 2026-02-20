@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"strings"
 	"syscall"
 	"time"
 	"unsafe"
@@ -52,6 +53,23 @@ func main() {
 		if err != nil {
 			buildLab = fmt.Sprintf("(unable to retrieve CurrentVersion BuildLab value due to '%s')", err)
 		}
+	}
+
+	// ensure we have the correct build number for any enablement package builds (e.g. 26220)
+	cv, err = registry.OpenKey(registry.LOCAL_MACHINE, `SOFTWARE\Microsoft\Windows NT\CurrentVersion`, registry.QUERY_VALUE)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	buildNumber, _, err := cv.GetStringValue("CurrentBuild")
+	if err != nil {
+		buildNumber = fmt.Sprintf("(unable to retrieve CurrentVersion CurrentBuild value due to '%s')", err)
+	}
+
+	buildLabSplit := strings.Split(buildLab, ".")
+	if buildLabSplit[0] != buildNumber {
+		// this is an enablement package build
+		buildLab = buildNumber + "." + strings.Join(buildLabSplit[1:], ".")
 	}
 
 	expirationTime := GetExpirationTime()
